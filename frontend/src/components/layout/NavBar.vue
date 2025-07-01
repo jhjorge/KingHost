@@ -7,12 +7,17 @@ import { ref } from "vue";
 
 const menu: { title: string; link: string; icon?: string }[] = [
   {
-    title: "Home",
+    title: "Página Incial",
     link: "/",
     icon: "",
   },
   {
-    title: "About",
+    title: "Filmes",
+    link: "/about",
+    icon: "",
+  },
+  {
+    title: "Favoritos",
     link: "/about",
     icon: "",
   },
