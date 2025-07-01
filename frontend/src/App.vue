@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-
+import { RouterView } from "vue-router";
+import NavBar from "@/components/layout/NavBar.vue";
+import FooterBar from "./components/layout/FooterBar.vue";
 </script>
 
 <template>
-  <header class="teste">      
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-  </header>
-
-  <RouterView />
+  <div class="">
+    <NavBar />
+    <main>
+      <RouterView />
+    </main>
+    <FooterBar />
+  </div>
 </template>
 
 <style lang="sass" scoped>
-.teste 
+.teste
   color: red
   font-weight: bold
-
 </style>
