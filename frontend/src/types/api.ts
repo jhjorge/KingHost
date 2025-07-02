@@ -2,5 +2,10 @@ import type { Movie } from "@/types/movie";
 
 export interface MovieApiResponse {
     status: string;
-    data: Movie[];
+    data: {
+        page: number,
+        results: Movie[]
+        total_pages: number
+        total_results: number
+    };
 }

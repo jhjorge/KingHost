@@ -6,12 +6,13 @@ use Illuminate\Support\Facades\Http;
 
 class MoviesService
 {
-    protected $baseUrl = 'https://api.themoviedb.org/3';
+    protected $baseUrl;
     protected $apiKey;
 
     public function __construct()
     {
         $this->apiKey = env('TMDB_API_KEY');
+        $this->baseUrl = env('TMDB_BASE_URL');
     }
 
     protected function request(string $endpoint, array $params = [])
@@ -25,8 +26,15 @@ class MoviesService
     public function getPopularMovies(int $page = 1)
     {
         $result = $this->request('/movie/popular', ['page' => $page]);
-
-        return $result['results'];
+        if (!isset($result['results'])) {
+            return [];
+        }
+        $movies = collect($result['results'])
+            ->filter(fn($movie) => !empty($movie['release_date']))
+            ->sortByDesc('release_date')
+            ->values();
+        $result['results'] = $movies->all();
+        return $result;
     }
 
     public function searchMovies(string $query, int $page = 1)
@@ -35,5 +43,46 @@ class MoviesService
             'query' => $query,
             'page' => $page,
         ]);
+    }
+    public function getNowPlayingMovies(int $page = 1)
+    {
+        $result =  $this->request('/movie/now_playing', ['page' => $page]);
+        if (!isset($result['results'])) {
+            return [];
+        }
+        $movies = collect($result['results'])
+            ->filter(fn($movie) => !empty($movie['release_date']))
+            ->sortByDesc('release_date')
+            ->values();
+        $result['results'] = $movies->all();
+        return $result;
+    }
+
+    public function getTopRatedMovies(int $page = 1)
+    {
+        $result = $this->request('/movie/top_rated', ['page' => $page]);
+        if (!isset($result['results'])) {
+            return [];
+        }
+        $movies = collect($result['results'])
+            ->filter(fn($movie) => !empty($movie['release_date']))
+            ->sortByDesc('release_date')
+            ->values();
+        $result['results'] = $movies->all();
+        return $result;
+    }
+
+    public function getUpcomingMovies(int $page = 1)
+    {
+        $result = $this->request('/movie/upcoming', ['page' => $page]);
+        if (!isset($result['results'])) {
+            return [];
+        }
+        $movies = collect($result['results'])
+            ->filter(fn($movie) => !empty($movie['release_date']))
+            ->sortByDesc('release_date')
+            ->values();
+        $result['results'] = $movies->all();
+        return $result;
     }
 }

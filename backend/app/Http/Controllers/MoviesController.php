@@ -4,15 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Services\MoviesService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class MoviesController extends Controller
 {
-
-    public function __construct(private MoviesService $movies_service) {}
-
-    public function index()
+    private \DateTimeInterface $ttl;
+    public function __construct(private MoviesService $movies_service)
     {
-        $movies = $this->movies_service->getPopularMovies();
+        $this->ttl = now()->addMinutes(30);
+    }
+
+
+    public function getPopular(Request $request)
+    {
+        $page = $request->query('page', 1);
+        $cacheKey = "popular_movies_page_{$page}";
+        $movies = Cache::remember($cacheKey, $this->ttl, function () use ($page) {
+            return $this->movies_service->getPopularMovies($page);
+        });
 
         return response()->json([
             'status' => 'success',
@@ -20,18 +30,20 @@ class MoviesController extends Controller
         ], 200);
     }
 
-    public function store(Request $request) {}
-
-
-    public function show(Request $request)
+    public function search(Request $request)
     {
+        $query = $request->query('query');
+        $page = $request->query('page', 1);
 
-        if ($request->has('query')) {
-            $query = $request->query('query');
-            $page = $request->query('page', 1);
-            $movies = $this->movies_service->searchMovies($query, $page);
+
+        if (!$query) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Query is required for search.',
+            ], 422);
         }
 
+        $movies = $this->movies_service->searchMovies($query, $page);
 
         return response()->json([
             'status' => 'success',
@@ -39,15 +51,38 @@ class MoviesController extends Controller
         ], 200);
     }
 
-
-    public function update(Request $request, string $id)
+    public function getNowPlaying(Request $request)
     {
-        //
+        $page = $request->query('page', 1);
+        $cacheKey = "getnowplaying_movies_page_{$page}";
+        $movies = Cache::remember($cacheKey, $this->ttl, function () use ($page) {
+            return $this->movies_service->getNowPlayingMovies($page);
+        });
+
+        return response()->json(['status' => 'success', 'data' => $movies], 200);
     }
 
-
-    public function destroy(string $id)
+    public function getTopRated(Request $request)
     {
-        //
+        $page = $request->query('page', 1);
+        $cacheKey = "gettoprated_movies_page_{$page}";
+        $movies = Cache::remember($cacheKey, $this->ttl, function () use ($page) {
+            return $this->movies_service->getTopRatedMovies($page);
+        });
+
+
+        return response()->json(['status' => 'success', 'data' => $movies], 200);
+    }
+
+    public function getUpcoming(Request $request)
+    {
+        $page = $request->query('page', 1);
+        $cacheKey = "getupcoming_movies_page_{$page}";
+        $movies = Cache::remember($cacheKey, $this->ttl, function () use ($page) {
+            return $this->movies_service->getUpcomingMovies($page);
+        });
+
+
+        return response()->json(['status' => 'success', 'data' => $movies], 200);
     }
 }

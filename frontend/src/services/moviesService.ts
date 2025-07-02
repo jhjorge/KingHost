@@ -1,12 +1,22 @@
 import api from "@/services/api";
 import type { MovieApiResponse } from "@/types/api";
 
-export const getPopularMovies = async (): Promise<MovieApiResponse> => {
-    try {
-        const response = await api.get("/movies");
-        return response.data;
-    } catch (error) {
-        console.error("Erro ao buscar filmes populares:", error);
-        throw error;
-    }
+export const getPopularMovies = async (page: number): Promise<MovieApiResponse> => {
+    const response = await api.get("/movies/popular", { params: { page } });
+    return response.data;
+};
+
+export const getNowPlayingMovies = async (page: number): Promise<MovieApiResponse> => {
+    const response = await api.get("/movies/now-playing", { params: { page } });
+    return response.data;
+};
+
+export const getTopRatedMovies = async (page: number): Promise<MovieApiResponse> => {
+    const response = await api.get("/movies/top-rated", { params: { page } });
+    return response.data;
+};
+
+export const getUpcomingMovies = async (page: number): Promise<MovieApiResponse> => {
+    const response = await api.get("/movies/upcoming", { params: { page } });
+    return response.data;
 };

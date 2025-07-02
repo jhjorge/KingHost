@@ -17,7 +17,7 @@ const isActive = ref(false);
     @keyup.enter.space="isActive = !isActive"
     :aria-expanded="isActive"
     :aria-label="`Expandir detalhes do filme ${movie.title}`"
-    class="max-w-sm rounded-2xl overflow-hidden transition hover:shadow-xl relative h-[66dvh] md:h-[50dvh] group focus:ring-3 focus:ring-[var(--color-primary)] card shadow-2xl"
+    class="max-w-sm rounded-2xl overflow-hidden transition-all shadow-md ring-white/10 ring-1 relative h-[66dvh] md:h-[50dvh] group focus:ring-3 focus:ring-[var(--color-primary)] card"
   >
     <img
       v-if="movie.poster_path"
@@ -31,8 +31,8 @@ const isActive = ref(false);
     ></div>
 
     <footer
-      :class="['transition', isActive ? 'bg-gradient-to-t min-h-max' : '']"
-      class="absolute bottom-0 z-20 p-4 flex flex-col text-white w-full group-hover:bg-gradient-to-t from-black/80 from-90% to-transparent transition-colors duration-300"
+      :class="[isActive ? 'bg-gradient-to-t min-h-max' : '']"
+      class="absolute bottom-0 z-20 p-4 flex flex-col text-white w-full group-hover:bg-gradient-to-t from-black/80 from-90% to-transparent transition-all ease-in-out duration-200"
     >
       <div class="drop-shadow-2xl">
         <h2 class="text-lg font-semibold line-clamp-2">{{ movie.title }}</h2>
@@ -54,8 +54,8 @@ const isActive = ref(false);
       </div>
 
       <div
-        :class="['transition', isActive ? 'opacity-100 min-h-max' : '']"
-        class="opacity-0 group-hover:opacity-100 group-hover:min-h-max transition-all h-0 duration-300 space-y-4"
+        :class="[isActive ? 'opacity-100 h-auto' : '']"
+        class="opacity-0 group-hover:opacity-100 group-hover:h-auto transition-all h-0 duration-200 ease-in-out space-y-4"
       >
         <p class="text-md line-clamp-3 leading-relaxed">
           {{ movie.overview ? movie.overview : "N/A" }}
