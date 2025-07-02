@@ -22,19 +22,11 @@ class MoviesService
         return Http::get("{$this->baseUrl}{$endpoint}", $params)->json();
     }
 
-    public function getAllPopularMovies(int $maxPages = 3)
+    public function getPopularMovies(int $page = 1)
     {
-        $allMovies = [];
+        $result = $this->request('/movie/popular', ['page' => $page]);
 
-        for ($page = 1; $page <= $maxPages; $page++) {
-            $result = $this->request('/movie/popular', ['page' => $page]);
-
-            if (isset($result['results'])) {
-                $allMovies = array_merge($allMovies, $result['results']);
-            }
-        }
-
-        return $allMovies;
+        return $result['results'];
     }
 
     public function searchMovies(string $query, int $page = 1)

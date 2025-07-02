@@ -1,4 +1,3 @@
-# Usando a imagem oficial do PHP com o Nginx
 FROM php:8.3-fpm
 
 
@@ -20,5 +19,4 @@ RUN composer install --no-interaction --prefer-dist
 
 EXPOSE 9000
 
-# Iniciar o PHP-FPM
 CMD ["php-fpm"]
