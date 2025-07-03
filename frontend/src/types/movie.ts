@@ -14,3 +14,4 @@ export interface Movie {
     adult: boolean;
     video: boolean;
 }
+export type MovieCategory = "popular" | "now_playing" | "top_rated" | "upcoming";
