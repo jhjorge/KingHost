@@ -2,11 +2,13 @@
 import { ref } from "vue";
 import PrimaryButton from "./buttons/PrimaryButton.vue";
 import type { Movie } from "@/types/movie";
+import { useFavoritesStore } from "@/stores/favorites";
 
 const props = defineProps<{
   movie: Movie;
 }>();
 const isActive = ref(false);
+const store = useFavoritesStore();
 </script>
 
 <template>
@@ -25,7 +27,24 @@ const isActive = ref(false);
       :alt="movie.title"
       class="w-full h-full absolute object-cover inset-0"
     />
-
+    <div class="absolute top right-0 z-20 m-2">
+      <span
+        class="material-symbols-outlined cursor-pointer p-1 rounded-full drop-shadow-2xl transition-colors duration-500 ease-in-out"
+        :class="
+          store.isFavorite(movie.id)
+            ? 'text-red-500 drop-shadow-2xl drop-shadow-white '
+            : 'text-white hover:text-red-500'
+        "
+        :style="
+          store.isFavorite(movie.id)
+            ? { WebkitTextStroke: '0.5px #fff' }
+            : { WebkitTextStroke: '0.5px #000' }
+        "
+        @click.stop="store.toggleItem(movie)"
+      >
+        favorite
+      </span>
+    </div>
     <div
       class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"
     ></div>
@@ -41,6 +60,7 @@ const isActive = ref(false);
           ⭐ {{ movie.vote_average ? movie.vote_average.toFixed(1) : "N/A" }}
         </span>
       </div>
+
       <div class="md:hidden flex">
         <span
           aria-label="Clique para ver mais detalhes do filme"
@@ -72,4 +92,8 @@ const isActive = ref(false);
   </article>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+</style>
