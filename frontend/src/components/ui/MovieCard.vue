@@ -19,7 +19,7 @@ const store = useFavoritesStore();
     @keyup.enter.space="isActive = !isActive"
     :aria-expanded="isActive"
     :aria-label="`Expandir detalhes do filme ${movie.title}`"
-    class="max-w-sm rounded-2xl overflow-hidden transition-all shadow-md ring-white/10 ring-1 relative h-[66dvh] md:h-[50dvh] group focus:ring-3 focus:ring-[var(--color-primary)] card"
+    class="max-w-sm rounded-2xl overflow-hidden transition-all shadow-md ring-white/10 ring-1 relative h-[66dvh] md:h-[50dvh] group focus:ring-3 focus:ring-[var(--color-primary)] hover:ring-[var(--color-primary)] card"
   >
     <img
       v-if="movie.poster_path"
@@ -67,7 +67,7 @@ const store = useFavoritesStore();
           :class="[
             isActive ? 'rotate-180 translate-y-0' : 'animate-bounce translate-y-3 ',
           ]"
-          class="mx-auto group-hover:rotate-180 transition duration-500 material-symbols-outlined rounded-full bg-black p-1"
+          class="mx-auto group-hover:rotate-180 transition duration-500 material-symbols-outlined rounded-full bg-black border-2 border-white p-1"
         >
           keyboard_double_arrow_down
         </span>

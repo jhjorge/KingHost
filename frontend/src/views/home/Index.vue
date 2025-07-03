@@ -3,10 +3,10 @@ import { onMounted, reactive } from "vue";
 import MovieCard from "@/components/ui/MovieCard.vue";
 import Pagination from "@/components/ui/Pagination.vue";
 import SkeletonCard from "@/components/ui/SkeletonCard.vue";
-import SecondaryButton from "@/components/ui/buttons/SecondaryButton.vue";
 import SkeletonButton from "@/components/ui/buttons/SkeletonButton.vue";
 import { useMovieFetcher } from "@/services/fetchMovie";
 import type { MovieCategory } from "@/types/movie";
+import PrimaryButton from "@/components/ui/buttons/PrimaryButton.vue";
 
 const {
   movies,
@@ -46,7 +46,7 @@ onMounted(() => fetchMovies());
 
     <div v-else-if="movies.length">
       <div class="flex flex-wrap justify-center w-full gap-2 py-6">
-        <SecondaryButton
+        <PrimaryButton
           v-for="{ title, link } in categoryList"
           :key="title"
           @click="changeCategory(link)"
@@ -55,14 +55,14 @@ onMounted(() => fetchMovies());
           class="transition-colors duration-300 ease-in"
           :class="[
             {
-              'bg-[var(--color-primary)] bg-opacity-70 text-white cursor-not-allowed':
+              'bg-[var(--color-secondary)] bg-opacity-70 text-black cursor-not-allowed':
                 currentCategory === link,
-              'cursor-pointer': currentCategory !== link && !loading,
+              'cursor-pointer text-white': currentCategory !== link && !loading,
               'cursor-not-allowed': loading,
             },
           ]"
           >{{ title }}
-        </SecondaryButton>
+        </PrimaryButton>
       </div>
       <div
         class="grid p-6 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8 card-container"

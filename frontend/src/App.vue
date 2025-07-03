@@ -2,14 +2,21 @@
 import { RouterView } from "vue-router";
 import NavBar from "@/components/layout/NavBar.vue";
 import FooterBar from "./components/layout/FooterBar.vue";
-import ToastWrapper from "@/components/ui/ToastWrapper.vue";
+import { useToastStore } from "@/stores/toast";
+import Toast from "@/components/ui/Toast.vue";
+const toastStore = useToastStore();
 </script>
 
 <template>
   <div class="bg-[var(--color-third)]">
     <NavBar />
     <main>
-      <ToastWrapper />
+      <Toast
+        v-for="(toast, index) in toastStore.toasts"
+        :key="index"
+        v-bind="toast"
+        @close="toastStore.removeToast(index)"
+      />
       <Transition mode="in-out" name="page-trasition">
         <RouterView />
       </Transition>

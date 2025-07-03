@@ -1,13 +1,8 @@
 <script setup lang="ts">
+import type { Toast } from "@/types/toast";
 import { ref, onMounted, onUnmounted } from "vue";
-type ToastType = "info" | "success" | "warning" | "error" | "danger";
-interface Props {
-  message: string;
-  type: "success" | "danger" | "warning" | "error" | "info";
-  duration?: number;
-}
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Toast>(), {
   duration: 5000,
 });
 
@@ -58,7 +53,7 @@ const icons = {
   <Transition name="fade">
     <div
       v-show="isVisible"
-      class="flex items-center z-30 w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow fixed bottom-4 right-4"
+      class="flex items-center z-30 w-full max-w-xs p-2 sm:p-4 mb-4 text-gray-500 bg-white rounded-lg shadow fixed bottom-4 right-2"
       role="alert"
     >
       <div
@@ -85,7 +80,7 @@ const icons = {
         @click="hide"
         aria-label="Close"
       >
-        <span class="sr-only">Fechar notificação de {{ type }}</span>
+        <span class="sr-only">Notificação de {{ type }}</span>
         <svg
           class="w-3 h-3"
           aria-hidden="true"
