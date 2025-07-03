@@ -3,7 +3,7 @@ import type { Toast } from "@/types/toast";
 import { ref, onMounted, onUnmounted } from "vue";
 
 const props = withDefaults(defineProps<Toast>(), {
-  duration: 5000,
+  duration: 8 * 1000,
 });
 
 const emit = defineEmits(["close"]);
@@ -53,7 +53,7 @@ const icons = {
   <Transition name="fade">
     <div
       v-show="isVisible"
-      class="flex items-center z-30 w-full max-w-xs p-2 sm:p-4 mb-4 text-gray-500 bg-white rounded-lg shadow fixed bottom-4 right-2"
+      class="flex items-center z-30 w-full max-w-xs p-2 sm:p-4 mb-4 text-white bg-[var(--color-third)]/95 backdrop-blur-lg rounded-lg shadow fixed bottom-2 right-2"
       role="alert"
     >
       <div
@@ -73,14 +73,13 @@ const icons = {
 
         <span class="sr-only">{{ type }} icon</span>
       </div>
-      <div class="ms-3 text-sm font-normal">{{ message }}</div>
+      <div class="ms-3 text-sm font-normal text-shadow-md">{{ message }}</div>
       <button
         type="button"
-        class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
+        class="ms-auto -mx-1.5 -my-1.5 bg-[var(--color-primary)] text-white hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center size-6"
         @click="hide"
-        aria-label="Close"
+        aria-label="Fechar Notificação"
       >
-        <span class="sr-only">Notificação de {{ type }}</span>
         <svg
           class="w-3 h-3"
           aria-hidden="true"

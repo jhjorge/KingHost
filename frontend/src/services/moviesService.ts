@@ -20,3 +20,7 @@ export const getUpcomingMovies = async (page: number): Promise<MovieApiResponse>
     const response = await api.get("/movies/upcoming", { params: { page } });
     return response.data;
 };
+export const searchMovies = async (query: string, page: number): Promise<MovieApiResponse> => {
+    const response = await api.get("/movies/search", { params: { query, page } });
+    return response.data;
+};

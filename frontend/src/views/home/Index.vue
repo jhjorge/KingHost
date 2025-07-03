@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import MovieCard from "@/components/ui/MovieCard.vue";
 import Pagination from "@/components/ui/Pagination.vue";
 import SkeletonCard from "@/components/ui/SkeletonCard.vue";
@@ -7,6 +7,7 @@ import SkeletonButton from "@/components/ui/buttons/SkeletonButton.vue";
 import { useMovieFetcher } from "@/services/fetchMovie";
 import type { MovieCategory } from "@/types/movie";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton.vue";
+import SearchInput from "@/components/ui/SearchInput.vue";
 
 const {
   movies,
@@ -14,10 +15,11 @@ const {
   currentPage,
   totalPages,
   currentCategory,
+  searchFunction,
   fetchMovies,
   changeCategory,
 } = useMovieFetcher();
-
+const query = ref("");
 const categoryList: { title: string; link: MovieCategory }[] = reactive([
   { title: "Populares", link: "popular" },
   { title: "Em Cartaz", link: "now_playing" },
@@ -26,11 +28,24 @@ const categoryList: { title: string; link: MovieCategory }[] = reactive([
 ]);
 
 const onPageChange = (page: number) => fetchMovies(page);
-
+const handlerCategory = (link: MovieCategory) => {
+  query.value = "";
+  changeCategory(link);
+};
+watch(query, (newValue) => {
+  if (newValue.trim() === "") {
+    fetchMovies(1);
+  }
+});
 onMounted(() => fetchMovies());
 </script>
 
 <template>
+  <section class="container mx-auto pt-6">
+    <div class="container flex justify-center">
+      <SearchInput :loading v-model="query" @search="searchFunction" />
+    </div>
+  </section>
   <section class="container mx-auto py-6 px-4">
     <div v-if="loading" class="">
       <div class="flex flex-wrap justify-center w-full gap-2 py-6">
@@ -49,7 +64,7 @@ onMounted(() => fetchMovies());
         <PrimaryButton
           v-for="{ title, link } in categoryList"
           :key="title"
-          @click="changeCategory(link)"
+          @click="handlerCategory(link)"
           :disabled="currentCategory === link || loading"
           aria-disabled="true"
           class="transition-colors duration-300 ease-in"
@@ -77,8 +92,11 @@ onMounted(() => fetchMovies());
         />
       </div>
     </div>
-    <div v-else class="text-center place-content-center font-medium text-white min-h-28">
-      <p>Nenhum Conteúdo Encontrado...</p>
+    <div
+      v-else
+      class="text-center place-content-center font-medium text-2xl text-white min-h-[68dvh]"
+    >
+      <p>Nenhum conteúdo encontrado <span class="">😢</span></p>
     </div>
   </section>
 </template>

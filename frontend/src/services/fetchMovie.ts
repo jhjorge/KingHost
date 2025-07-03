@@ -4,6 +4,7 @@ import {
     getNowPlayingMovies,
     getTopRatedMovies,
     getUpcomingMovies,
+    searchMovies,
 } from "@/services/moviesService";
 import type { Movie, MovieCategory } from "@/types/movie";
 
@@ -45,9 +46,24 @@ export function useMovieFetcher() {
         fetchMovies();
     };
 
+    const searchFunction = async (query: string, page: number = 1) => {
+        loading.value = true;
+        try {
+            const res = await searchMovies(query, page)
+            movies.value = res.data.results;
+            currentPage.value = res.data.page;
+            totalPages.value = res.data.total_pages;
+        } catch (err) {
+            console.error("Erro ao buscar filmes:", err);
+        } finally {
+            loading.value = false;
+        }
+    }
+
     return {
         movies,
         loading,
+        searchFunction,
         currentPage,
         totalPages,
         currentCategory,

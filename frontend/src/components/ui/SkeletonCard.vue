@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 <template>
   <article
-    class="max-w-sm rounded-2xl overflow-hidden shadow-md relative h-[66dvh] md:h-[50dvh] bg-white/30 animate-pulse"
+    class="max-w-sm rounded-2xl overflow-hidden shadow-md relative h-[66dvh] md:h-[50dvh] bg-white/30 animate-pulse hover:cursor-progress"
   >
     <div class="w-full h-full bg-gray-300/30"></div>
 

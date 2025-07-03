@@ -15,7 +15,19 @@ class MoviesController extends Controller
         $this->ttl = now()->addMinutes(30);
     }
 
+    public function getGenres()
+    {
+        $cacheKey = "tmdb_genres";
 
+        $genres = Cache::remember($cacheKey, $this->ttl, function () {
+            return $this->movies_service->getGenre();
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $genres,
+        ], 200);
+    }
     public function getPopular(Request $request)
     {
         $page = $request->query('page', 1);
@@ -39,7 +51,7 @@ class MoviesController extends Controller
         if (!$query) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Query is required for search.',
+                'message' => 'É necessária uma consulta para a pesquisa.',
             ], 422);
         }
 

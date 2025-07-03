@@ -23,6 +23,24 @@ class MoviesService
         return Http::get("{$this->baseUrl}{$endpoint}", $params)->json();
     }
 
+    public function searchMovies(string $query, int $page = 1)
+    {
+        return $this->request('/search/movie', [
+            'query' => $query,
+            'page' => $page,
+        ]);
+    }
+    public function getGenre()
+    {
+        $result = $this->request('/genre/movie/list');
+
+        if (!isset($result['genres'])) {
+            return [];
+        }
+
+        return $result['genres'];
+    }
+
     public function getPopularMovies(int $page = 1)
     {
         $result = $this->request('/movie/popular', ['page' => $page]);
@@ -37,13 +55,6 @@ class MoviesService
         return $result;
     }
 
-    public function searchMovies(string $query, int $page = 1)
-    {
-        return $this->request('/search/movie', [
-            'query' => $query,
-            'page' => $page,
-        ]);
-    }
     public function getNowPlayingMovies(int $page = 1)
     {
         $result =  $this->request('/movie/now_playing', ['page' => $page]);

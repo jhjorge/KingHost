@@ -22,7 +22,7 @@ const movies = computed(() => favoritesStore.getItems);
 
     <div
       v-else
-      class="text-center text-lg flex justify-center items-center text-white font-mediumm min-h-96"
+      class="text-center place-content-center font-medium text-2xl text-white min-h-[68dvh]"
     >
       <p>Nenhum conteúdo encontrado nos favoritos 😢</p>
     </div>

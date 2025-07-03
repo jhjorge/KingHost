@@ -37,7 +37,6 @@ export const useFavoritesStore = defineStore('favorites', () => {
       toastStore.addToast({
         type: 'warning',
         message: `Removido dos favoritos: ${movie.title}`,
-        duration: 4000
       });
 
       return
@@ -46,7 +45,6 @@ export const useFavoritesStore = defineStore('favorites', () => {
     toastStore.addToast({
       type: 'success',
       message: `Adicionado aos favoritos: ${movie.title}`,
-      duration: 4000
     });
 
   };
