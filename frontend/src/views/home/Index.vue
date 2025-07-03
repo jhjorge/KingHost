@@ -1,34 +1,136 @@
 <script setup lang="ts">
+import { ref, onMounted, reactive } from "vue";
 import MovieCard from "@/components/ui/MovieCard.vue";
-import { SliderHome } from "./partials";
-</script>
-<template>
-  <section class="">
-    <SliderHome />
-  </section>
+import {
+  getPopularMovies,
+  getNowPlayingMovies,
+  getTopRatedMovies,
+  getUpcomingMovies,
+} from "@/services/moviesService";
+import type { Movie } from "@/types/movie";
+import Pagination from "@/components/ui/Pagination.vue";
+import SkeletonCard from "@/components/ui/SkeletonCard.vue";
+import SecondaryButton from "@/components/ui/buttons/SecondaryButton.vue";
+import SkeletonButton from "@/components/ui/buttons/SkeletonButton.vue";
 
-  <section class="container mx-auto overflow-hidden py-6">
-    <form
-      role="search"
-      aria-label="Buscar filmes no site"
-      @submit.prevent
-      class="flex justify-center"
-    >
-      <label for="site-search" class="sr-only">Buscar filmes no site</label>
-      <input
-        type="search"
-        id="site-search"
-        name="q"
-        placeholder="Estou buscando por..."
-        autocomplete="off"
-        class="border border-gray-300 rounded-md px-4 py-2 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
-      />
-    </form>
-    <div
-      class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] justify-center gap-6 p-4 md:gap-8 md:p-8"
-    >
-      <MovieCard v-for="i in 10" />
+const movies = ref<Movie[]>([]);
+const loading = ref(true);
+const currentPage = ref(1);
+const totalPages = ref(1);
+
+type MovieCategory = "popular" | "now_playing" | "top_rated" | "upcoming";
+const currentCategory = ref<MovieCategory>("popular");
+const categoryList: { title: string; link: MovieCategory }[] = reactive([
+  {
+    title: "Populares",
+    link: "popular",
+  },
+  {
+    title: "Em Cartaz",
+    link: "now_playing",
+  },
+  {
+    title: "Melhores Avaliados",
+    link: "top_rated",
+  },
+  {
+    title: "Em Breve",
+    link: "upcoming",
+  },
+]);
+
+const fetchMap = {
+  popular: getPopularMovies,
+  now_playing: getNowPlayingMovies,
+  top_rated: getTopRatedMovies,
+  upcoming: getUpcomingMovies,
+};
+
+const fetchMovies = async (page = 1) => {
+  loading.value = true;
+  try {
+    const fetchFunction = fetchMap[currentCategory.value];
+    const res = await fetchFunction(page);
+    movies.value = res.data.results;
+    currentPage.value = res.data.page;
+    totalPages.value = res.data.total_pages;
+  } catch (err) {
+    console.error("Erro ao buscar filmes:", err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+const changeCategory = (category: MovieCategory) => {
+  if (currentCategory.value === category) return;
+  currentCategory.value = category;
+  currentPage.value = 1;
+  fetchMovies();
+};
+
+const onPageChange = (page: number) => fetchMovies(page);
+onMounted(() => fetchMovies());
+</script>
+
+<template>
+  <section class="container mx-auto py-6 px-4">
+    <div v-if="loading" class="">
+      <div class="flex flex-wrap justify-center w-full gap-2 py-6">
+        <SkeletonButton v-for="i in 4" :key="i" />
+      </div>
+
+      <div
+        class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6 md:gap-8"
+      >
+        <SkeletonCard v-for="i in 8" :key="i" />
+      </div>
+    </div>
+
+    <div v-else-if="movies.length">
+      <div class="flex flex-wrap justify-center w-full gap-2 py-6">
+        <SecondaryButton
+          v-for="{ title, link } in categoryList"
+          :key="title"
+          @click="changeCategory(link)"
+          :disabled="currentCategory === link || loading"
+          aria-disabled="true"
+          class="transition-colors duration-300 ease-in"
+          :class="[
+            {
+              'bg-[var(--color-primary)] bg-opacity-70 text-white cursor-not-allowed':
+                currentCategory === link,
+              'cursor-pointer': currentCategory !== link && !loading,
+              'cursor-not-allowed': loading,
+            },
+          ]"
+          >{{ title }}
+        </SecondaryButton>
+      </div>
+      <div
+        class="grid p-6 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8 card-container"
+      >
+        <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie" class="card" />
+      </div>
+      <div class="p-4">
+        <Pagination
+          :currentPage="currentPage"
+          :totalPages="totalPages"
+          @update:page="onPageChange"
+        />
+      </div>
+    </div>
+    <div v-else class="text-center place-content-center font-medium text-white min-h-28">
+      <p>Nenhum Conteúdo Encontrado...</p>
     </div>
   </section>
 </template>
-<style></style>
+
+<style scoped lang="scss">
+.card-container:has(.card:hover) .card:not(:hover) {
+  opacity: 0.9;
+  transform: scale(0.95);
+}
+.card {
+  transition: all 0.3s ease-in-out;
+}
+</style>

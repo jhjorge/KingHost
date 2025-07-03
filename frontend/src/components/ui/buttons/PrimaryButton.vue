@@ -1,7 +1,7 @@
 <template>
   <button
     type="button"
-    class="bg-[var(--color-primary)] text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-all duration-200"
+    class="inline-flex items-center justify-center gap-2 bg-[var(--color-primary)] text-white font-semibold px-5 py-2.5 rounded-xl shadow-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)] transition-all duration-200 cursor-pointer"
   >
     <slot />
   </button>

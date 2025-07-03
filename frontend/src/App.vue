@@ -5,7 +5,7 @@ import FooterBar from "./components/layout/FooterBar.vue";
 </script>
 
 <template>
-  <div class="">
+  <div class="bg-[var(--color-third)]">
     <NavBar />
     <main>
       <RouterView />
@@ -14,8 +14,4 @@ import FooterBar from "./components/layout/FooterBar.vue";
   </div>
 </template>
 
-<style lang="sass" scoped>
-.teste
-  color: red
-  font-weight: bold
-</style>
+<style lang="sass" scoped></style>
