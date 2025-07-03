@@ -3,7 +3,7 @@ import { ref } from "vue";
 import PrimaryButton from "./buttons/PrimaryButton.vue";
 import type { Movie } from "@/types/movie";
 
-defineProps<{
+const props = defineProps<{
   movie: Movie;
 }>();
 const isActive = ref(false);
@@ -32,7 +32,7 @@ const isActive = ref(false);
 
     <footer
       :class="[isActive ? 'bg-gradient-to-t min-h-max' : '']"
-      class="absolute bottom-0 z-20 p-4 flex flex-col text-white w-full group-hover:bg-gradient-to-t from-black/80 from-90% to-transparent transition-all ease-in-out duration-200"
+      class="absolute bottom-0 z-20 p-4 flex flex-col text-white w-full group-hover:bg-gradient-to-t from-black/80 from-90% to-transparent transition-all ease-in-out duration-500"
     >
       <div class="drop-shadow-2xl">
         <h2 class="text-lg font-semibold line-clamp-2">{{ movie.title }}</h2>
@@ -47,7 +47,7 @@ const isActive = ref(false);
           :class="[
             isActive ? 'rotate-180 translate-y-0' : 'animate-bounce translate-y-3 ',
           ]"
-          class="mx-auto group-hover:rotate-180 transition duration-200 material-symbols-outlined rounded-full bg-black p-1"
+          class="mx-auto group-hover:rotate-180 transition duration-500 material-symbols-outlined rounded-full bg-black p-1"
         >
           keyboard_double_arrow_down
         </span>
@@ -55,7 +55,7 @@ const isActive = ref(false);
 
       <div
         :class="[isActive ? 'opacity-100 h-auto' : '']"
-        class="opacity-0 group-hover:opacity-100 group-hover:h-auto transition-all h-0 duration-200 ease-in-out space-y-4"
+        class="opacity-0 group-hover:opacity-100 group-hover:h-auto transition-all h-0 duration-500 ease-in-out space-y-4"
       >
         <p class="text-md line-clamp-3 leading-relaxed">
           {{ movie.overview ? movie.overview : "N/A" }}

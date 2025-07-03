@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from "vue";
 import MovieCard from "@/components/ui/MovieCard.vue";
-import { SliderHome } from "./partials";
 import {
   getPopularMovies,
   getNowPlayingMovies,
@@ -12,6 +11,7 @@ import type { Movie } from "@/types/movie";
 import Pagination from "@/components/ui/Pagination.vue";
 import SkeletonCard from "@/components/ui/SkeletonCard.vue";
 import SecondaryButton from "@/components/ui/buttons/SecondaryButton.vue";
+import SkeletonButton from "@/components/ui/buttons/SkeletonButton.vue";
 
 const movies = ref<Movie[]>([]);
 const loading = ref(true);
@@ -68,35 +68,17 @@ const changeCategory = (category: MovieCategory) => {
   fetchMovies();
 };
 
-const onPageChange = (page: number) => {
-  fetchMovies(page);
-};
-
-onMounted(() => {
-  fetchMovies();
-});
+const onPageChange = (page: number) => fetchMovies(page);
+onMounted(() => fetchMovies());
 </script>
 
 <template>
-  <section>
-    <SliderHome />
-  </section>
-
   <section class="container mx-auto py-6 px-4">
-    <div class="flex flex-wrap justify-center w-full gap-2 py-6">
-      <SecondaryButton
-        v-for="{ title, link } in categoryList"
-        :key="title"
-        @click="changeCategory(link)"
-        class="transition-colors duration-300 ease-in"
-        :class="{
-          'bg-opacity-70 bg-[var(--color-primary)] text-white': currentCategory === link,
-        }"
-        >{{ title }}
-      </SecondaryButton>
-    </div>
-
     <div v-if="loading" class="">
+      <div class="flex flex-wrap justify-center w-full gap-2 py-6">
+        <SkeletonButton v-for="i in 4" :key="i" />
+      </div>
+
       <div
         class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6 md:gap-8"
       >
@@ -105,8 +87,27 @@ onMounted(() => {
     </div>
 
     <div v-else-if="movies.length">
+      <div class="flex flex-wrap justify-center w-full gap-2 py-6">
+        <SecondaryButton
+          v-for="{ title, link } in categoryList"
+          :key="title"
+          @click="changeCategory(link)"
+          :disabled="currentCategory === link || loading"
+          aria-disabled="true"
+          class="transition-colors duration-300 ease-in"
+          :class="[
+            {
+              'bg-[var(--color-primary)] bg-opacity-70 text-white cursor-not-allowed':
+                currentCategory === link,
+              'cursor-pointer': currentCategory !== link && !loading,
+              'cursor-not-allowed': loading,
+            },
+          ]"
+          >{{ title }}
+        </SecondaryButton>
+      </div>
       <div
-        class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6 md:gap-8"
+        class="grid p-6 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8 card-container"
       >
         <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie" class="card" />
       </div>

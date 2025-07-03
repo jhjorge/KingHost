@@ -39,9 +39,8 @@ const visiblePages = computed(() => {
 });
 
 function selectPage(page: number) {
-  if (page !== props.currentPage && page >= 1 && page <= props.totalPages) {
+  if (page !== props.currentPage && page >= 1 && page <= props.totalPages)
     emit("update:page", page);
-  }
 }
 </script>
 
