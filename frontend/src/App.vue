@@ -10,7 +10,7 @@ const toastStore = useToastStore();
 <template>
   <div class="bg-[var(--color-third)]">
     <NavBar />
-    <main>
+    <main class="min-h-screen">
       <Toast
         v-for="(toast, index) in toastStore.toasts"
         :key="index"

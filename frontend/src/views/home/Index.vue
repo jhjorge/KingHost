@@ -8,6 +8,7 @@ import { useMovieFetcher } from "@/services/fetchMovie";
 import type { MovieCategory } from "@/types/movie";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton.vue";
 import SearchInput from "@/components/ui/SearchInput.vue";
+import { BannerHome } from "./partials";
 
 const {
   movies,
@@ -41,26 +42,30 @@ onMounted(() => fetchMovies());
 </script>
 
 <template>
-  <section class="container mx-auto pt-6">
-    <div class="container flex justify-center">
+  <section>
+    <BannerHome />
+  </section>
+
+  <section class="container mx-auto">
+    <div class="container flex justify-center p-4 mt-6">
       <SearchInput :loading v-model="query" @search="searchFunction" />
     </div>
   </section>
-  <section class="container mx-auto py-6 px-4">
-    <div v-if="loading" class="">
-      <div class="flex flex-wrap justify-center w-full gap-2 py-6">
+  <section class="container mx-auto p-4">
+    <div v-if="loading" class="flex flex-col gap-4">
+      <div class="flex flex-wrap justify-center w-full gap-2">
         <SkeletonButton v-for="i in 4" :key="i" />
       </div>
 
       <div
-        class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6 md:gap-8"
+        class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6 md:gap-8 bg-gradient-to-b to-gray-700/10 via-black/60 from-gray-600/10 shadow rounded-xl p-8"
       >
         <SkeletonCard v-for="i in 8" :key="i" />
       </div>
     </div>
 
-    <div v-else-if="movies.length">
-      <div class="flex flex-wrap justify-center w-full gap-2 py-6">
+    <div v-else-if="movies.length" class="space-y-6">
+      <div class="flex flex-wrap justify-center w-full gap-4">
         <PrimaryButton
           v-for="{ title, link } in categoryList"
           :key="title"
@@ -81,11 +86,11 @@ onMounted(() => fetchMovies());
         </PrimaryButton>
       </div>
       <div
-        class="grid p-6 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8 card-container"
+        class="grid p-8 gap-8 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] card-container bg-gradient-to-b to-gray-700/10 via-black/60 from-gray-600/10 shadow rounded-xl"
       >
         <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie" class="card" />
       </div>
-      <div class="p-4">
+      <div class="">
         <Pagination
           :currentPage="currentPage"
           :totalPages="totalPages"

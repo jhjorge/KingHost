@@ -30,9 +30,9 @@ const toggleMenu = () => {
   >
     <nav class="container mx-auto">
       <div
-        class="md:grid md:grid-cols-[0.5fr_auto_0.5fr] flex justify-between items-center p-2"
+        class="md:grid md:grid-cols-[0.5fr_auto_0.5fr] flex justify-between items-center p-4"
       >
-        <div class="w-12">
+        <div class="w-12 hover:scale-110 transition-all ease-in-out duration-300">
           <RouterLink to="/">
             <Logo />
           </RouterLink>

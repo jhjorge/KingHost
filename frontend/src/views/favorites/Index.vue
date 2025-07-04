@@ -31,20 +31,23 @@ const filteredFavorites = computed(() => {
     <h1 class="text-white text-5xl font-semibold m-4">Meus Favoritos</h1>
   </div>
   <section class="container mx-auto">
-    <div class="flex gap-4 flex-wrap m-4" v-if="loading">
-      <SkeletonButton v-for="i in 10" />
+    <div class="flex gap-4 justify-center flex-wrap mx-1 sm:m-4" v-if="loading">
+      <SkeletonButton v-for="i in 5" />
     </div>
     <div v-else>
       <h2 class="text-white text-2xl font-semibold m-4">Filtros por Gêneros</h2>
-      <div class="flex flex-wrap gap-2 m-4">
+
+      <div
+        class="flex snap-x snap-always gap-4 m-4 pb-6 overflow-hidden overflow-x-auto scrollbar-custom"
+      >
         <PrimaryButton
           @click="selectedGenreId = null"
           :disabled="selectedGenreId === null"
           :class="[
-            'px-4 py-2 rounded text-sm font-medium border hover:bg-[var(--color-secondary)] hover:text-black',
+            ' rounded text-sm font-medium border hover:bg-[var(--color-secondary)] hover:text-black snap-start',
             selectedGenreId === null
               ? 'bg-[var(--color-secondary)] bg-opacity-70 text-black cursor-not-allowed'
-              : ' text-white cursor-pointer',
+              : 'text-white hover:bg-[var(--color-secondary)] hover:text-black cursor-pointer',
           ]"
         >
           Todos
@@ -56,10 +59,10 @@ const filteredFavorites = computed(() => {
           :disabled="selectedGenreId === genre.id"
           @click="selectedGenreId = genre.id"
           :class="[
-            'hover:bg-[var(--color-secondary)] hover:text-black',
+            'hover:bg-[var(--color-secondary)] hover:text-black snap-start',
             selectedGenreId === genre.id
               ? ' bg-[var(--color-secondary)] bg-opacity-70 text-black cursor-not-allowed'
-              : 'text-white hover:bg-[var] cursor-pointer',
+              : 'text-white hover:bg-[var(--color-secondary)] hover:text-black cursor-pointer',
           ]"
         >
           {{ genre.name }}
@@ -97,5 +100,17 @@ const filteredFavorites = computed(() => {
 }
 .card {
   transition: all 0.3s ease-in-out;
+}
+.scrollbar-custom::-webkit-scrollbar {
+  height: 12px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: var(--color-secondary);
+  border-radius: 24px;
 }
 </style>
