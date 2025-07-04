@@ -5,8 +5,9 @@ import {
     getTopRatedMovies,
     getUpcomingMovies,
     searchMovies,
+    getGenresMovies,
 } from "@/services/moviesService";
-import type { Movie, MovieCategory } from "@/types/movie";
+import type { Genre, Movie, MovieCategory } from "@/types/movie";
 
 
 
@@ -19,6 +20,7 @@ const fetchMap = {
 
 export function useMovieFetcher() {
     const movies = ref<Movie[]>([]);
+    const genres = ref<Genre[]>([]);
     const loading = ref(false);
     const currentPage = ref(1);
     const totalPages = ref(1);
@@ -59,15 +61,29 @@ export function useMovieFetcher() {
             loading.value = false;
         }
     }
+    const getGenres = async () => {
+        loading.value = true;
+        try {
+            const res = await getGenresMovies();
+            genres.value = res.data;
+        } catch (err) {
+            console.error("Erro ao buscar gêneros:", err);
+        } finally {
+            loading.value = false;
+        }
+    };
+
 
     return {
         movies,
         loading,
+        genres,
         searchFunction,
         currentPage,
         totalPages,
         currentCategory,
         fetchMovies,
         changeCategory,
+        getGenres,
     };
 }

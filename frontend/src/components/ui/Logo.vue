@@ -1,7 +1,7 @@
 <template>
   <img
-    src="@/assets/imgs/logo.jpeg"
+    src="@/assets/imgs/logo.png"
     alt="Logo do CineMágico"
-    class="rounded-lg object-cover object-center"
+    class="object-cover object-center"
   />
 </template>

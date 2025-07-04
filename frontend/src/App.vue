@@ -10,30 +10,18 @@ const toastStore = useToastStore();
 <template>
   <div class="bg-[var(--color-third)]">
     <NavBar />
-    <main>
+    <main class="min-h-screen">
       <Toast
         v-for="(toast, index) in toastStore.toasts"
         :key="index"
         v-bind="toast"
         @close="toastStore.removeToast(index)"
       />
-      <Transition mode="in-out" name="page-trasition">
-        <RouterView />
-      </Transition>
+
+      <RouterView />
     </main>
     <FooterBar />
   </div>
 </template>
 
-<style lang="sass" scoped>
-.page-transition-enter-active, .page-transition-leave-active
-  transition: opacity 0.4s ease, transform 0.4s ease
-
-.page-transition-enter-from, .page-transition-leave-to
-  opacity: 0
-  transform: translateY(20px)
-
-.page-transition-enter-to, .page-transition-leave-from
-  opacity: 1
-  transform: translateY(0)
-</style>
+<style lang="sass" scoped></style>

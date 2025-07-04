@@ -1,6 +1,10 @@
 import api from "@/services/api";
-import type { MovieApiResponse } from "@/types/api";
+import type { GenreApiResponse, MovieApiResponse } from "@/types/api";
 
+export const getGenresMovies = async (): Promise<GenreApiResponse> => {
+    const response = await api.get("/movies/genres");
+    return response.data;
+};
 export const getPopularMovies = async (page: number): Promise<MovieApiResponse> => {
     const response = await api.get("/movies/popular", { params: { page } });
     return response.data;

@@ -15,3 +15,8 @@ export interface Movie {
     video: boolean;
 }
 export type MovieCategory = "popular" | "now_playing" | "top_rated" | "upcoming";
+
+export interface Genre {
+    id: number;
+    name: string;
+}

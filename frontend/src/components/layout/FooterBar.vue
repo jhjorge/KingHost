@@ -7,8 +7,8 @@ const menu: { title: string; link: string }[] = [
     link: "/",
   },
   {
-    title: "About",
-    link: "/about",
+    title: "Favoritos",
+    link: "/favoritos",
   },
 ];
 const year: number = new Date().getFullYear();
