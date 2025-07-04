@@ -10,4 +10,5 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
     Route::get('movies/top-rated', [MoviesController::class, 'getTopRated']);
     Route::get('movies/upcoming', [MoviesController::class, 'getUpcoming']);
     Route::get('movies/search', [MoviesController::class, 'search']);
+    Route::get('movies/genres', [MoviesController::class, 'getGenres']);
 });

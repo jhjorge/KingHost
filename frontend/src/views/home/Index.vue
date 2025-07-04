@@ -76,7 +76,8 @@ onMounted(() => fetchMovies());
               'cursor-not-allowed': loading,
             },
           ]"
-          >{{ title }}
+        >
+          {{ title }}
         </PrimaryButton>
       </div>
       <div

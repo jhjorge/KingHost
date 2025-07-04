@@ -30,6 +30,7 @@ class MoviesService
             'page' => $page,
         ]);
     }
+
     public function getGenre()
     {
         $result = $this->request('/genre/movie/list');
