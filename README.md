@@ -128,8 +128,3 @@ docker-compose exec app php artisan test
 - The Movie Database API (TMDB)
 
 ---
-
-```
-
----
-
