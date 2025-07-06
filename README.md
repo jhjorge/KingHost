@@ -1,11 +1,5 @@
 # Projeto SPA e API REST TMDB
-
-<<<<<<< HEAD
-Este projeto é uma aplicação completa com backend em **Laravel** e frontend desacoplado em **Vue.js**, que consome a [API do TMDB](https://www.themoviedb.org/) para listar e gerenciar filmes populares, em cartaz, mais bem avaliados e lançamentos futuros.
-=======
 Este projeto é uma aplicação completa com backend em **Laravel** e frontend desacoplado em **Vue.js**, que consome a [API do TMDB](https://www.themoviedb.org/) para listar e gerenciar filmes populares, em cartaz, mais bem avaliados e lançamentos.
->>>>>>> main
-
 ---
 
 ## Obter chave da API do TMDB
@@ -140,20 +134,3 @@ docker-compose exec app php artisan test
 
 ##  Estrutura do projeto
 
-```
-KingHost/
-├── backend/          # Laravel API
-│   ├── app/
-│   ├── routes/
-│   ├── tests/
-│   └── ...
-├── frontend/         # Vue 3 SPA
-│   ├── src/
-│   ├── public/
-│   └── ...
-└── docker-compose.yml
-```
-
----
-
->>>>>>> main
