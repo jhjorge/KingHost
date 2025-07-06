@@ -129,20 +129,6 @@ docker-compose exec app php artisan test
 
 ---
 
-##  Estrutura do projeto
-
-```
-KingHost/
-├── backend/          # Laravel API
-│   ├── app/
-│   ├── routes/
-│   ├── tests/
-│   └── ...
-├── frontend/         # Vue 3 SPA
-│   ├── src/
-│   ├── public/
-│   └── ...
-└── docker-compose.yml
 ```
 
 ---
